@@ -132,7 +132,11 @@ class HBNBCommand(cmd.Cmd):
             for i in range(1,len(argument)):
                 keyword = argument[i].split('=')
                 value = json.loads(keyword[1])
-                setattr(new_instance, keyword[0], value)
+                if type(value) is str:
+                    new_value = value.replace("_", " ")
+                    setattr(new_instance, keyword[0], new_value)
+                else:
+                    setattr(new_instance, keyword[0], value)
             storage.save()
             print(new_instance.id)
 
