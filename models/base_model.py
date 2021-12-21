@@ -15,7 +15,6 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
-            from models import storage
             self.id = Column(String(60), nullable=False, primary_key=True, default=uuid.uuid4())
             self.created_at = Column(DateTime, default=datetime.datetime.utcnow)
             self.state_id = Column(DateTime, default=datetime.datetime.utcnow)
