@@ -15,18 +15,18 @@ class DBStorage:
 		self.__engine = engine
 
         engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format(
-        username, passwrd, database), pool_pre_ping=True)
+        HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_DB), pool_pre_ping=True)
 		Base.metadata.create_all(engine)
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         new_dict = {}
         if cls is not None:
-            for k, v in FileStorage.__objects.items():
+            for k, v in DBStorage.__session.items():
                 if k.split('.')[0] == cls.__name__:
                     new_dict[k] = v
             return new_dict
-        return FileStorage.__objects
+        return DBStorage.__session
 
     def new(self, obj):
         """Add the object to the current database session"""
@@ -36,7 +36,7 @@ class DBStorage:
         """Commit all changes of the current database session"""
         with open(FileStorage.__file_path, 'w') as f:
             temp = {}
-            temp.update(FileStorage.__objects)
+            temp.update(DBStorage.__session)
             for key, val in temp.items():
                 temp[key] = val.to_dict()
             json.dump(temp, f)
