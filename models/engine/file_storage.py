@@ -50,9 +50,10 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """Delete object from file"""
+        """Delete object from storage dictionary"""
         if obj is None:
             return
         
-        print(obj)
-
+        for k, v in FileStorage.__objects.items():
+            if k.split('.')[1] == obj.id:
+                FileStorage.__objects.pop(obj.id)
