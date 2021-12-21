@@ -1,5 +1,5 @@
 -- Create the database hbnb_dev_db in your MySQL server.
--- If the database hbtn_0c_0 already exists, the script should not fail.
+-- If the database hbnb_test_db already exists, the script should not fail.
 -- Create a new user hbnb_dev (in localhost) and a password.
 -- hbnb_dev should have all privileges on the database hbnb_dev_db (and only this database).
 -- hbnb_dev should have SELECT privilege on the database performance_schema (and only this database).
