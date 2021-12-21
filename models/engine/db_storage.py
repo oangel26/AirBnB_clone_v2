@@ -12,11 +12,12 @@ class DBStorage:
 
     def __init__(self):
 		"""Returns a dictionary of models currently in storage"""
-		self.__engine = engine
-
-        engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
+		self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
         os.getenv('HBNB_MYSQL_USER'), os.getenv('HBNB_MYSQL_PWD'), os.getenv('HBNB_MYSQL_HOST'), os.getenv('HBNB_MYSQL_DB'), pool_pre_ping=True)
-		Base.metadata.create_all(engine)
+		Base.metadata.create_all(DBStorage.__engine)
+
+		if os.getenv('HBNB_ENV') == 'test':
+			self.__table__.drop(DBStorage.__engine)
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
