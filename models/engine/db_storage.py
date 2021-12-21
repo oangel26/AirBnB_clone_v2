@@ -8,6 +8,13 @@ class FileStorage:
     __engine = None
     __session = None
 
+    def __init__(self):
+
+		
+
+
+
+
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         new_dict = {}
