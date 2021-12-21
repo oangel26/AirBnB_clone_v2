@@ -54,4 +54,4 @@ class FileStorage:
         if obj is not None:
             FileStorage.__objects.pop(str(obj.to_dict()[
                 '__class__']) + '.' + str(obj.id))
-        self.save()
+            self.save()
