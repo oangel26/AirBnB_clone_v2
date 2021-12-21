@@ -2,7 +2,7 @@
 """This module defines a class to manage file storage for hbnb clone"""
 import json
 from sqlalchemy import (create_engine)
-
+import os
 
 
 class DBStorage:
@@ -14,8 +14,8 @@ class DBStorage:
 		"""Returns a dictionary of models currently in storage"""
 		self.__engine = engine
 
-        engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format(
-        HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_DB), pool_pre_ping=True)
+        engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
+        os.getenv('HBNB_MYSQL_USER'), os.getenv('HBNB_MYSQL_PWD'), os.getenv('HBNB_MYSQL_HOST'), os.getenv('HBNB_MYSQL_DB'), pool_pre_ping=True)
 		Base.metadata.create_all(engine)
 
     def all(self, cls=None):
