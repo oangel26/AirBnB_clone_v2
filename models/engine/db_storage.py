@@ -1,19 +1,22 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
+from sqlalchemy import (create_engine)
 
 
-class FileStorage:
-    """This class manages storage of hbnb models in JSON format"""
+
+class DBStorage:
+    """This class manages storage of hbnb models in database format"""
     __engine = None
     __session = None
 
     def __init__(self):
+		"""Returns a dictionary of models currently in storage"""
+		self.__engine = engine
 
-		
-
-
-
+        engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format(
+        username, passwrd, database), pool_pre_ping=True)
+		Base.metadata.create_all(engine)
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
@@ -26,11 +29,11 @@ class FileStorage:
         return FileStorage.__objects
 
     def new(self, obj):
-        """Adds new object to storage dictionary"""
+        """Add the object to the current database session"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def save(self):
-        """Saves storage dictionary to file"""
+        """Commit all changes of the current database session"""
         with open(FileStorage.__file_path, 'w') as f:
             temp = {}
             temp.update(FileStorage.__objects)
@@ -63,7 +66,7 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """Delete object from storage dictionary"""
+        """Delete from the current database session"""
         if obj is not None:
             key = "{}.{}".format(obj.to_dict()['__class__'], obj.id)
             if key in FileStorage.__objects:
