@@ -56,4 +56,3 @@ class FileStorage:
             delete = [k for k in FileStorage.__objects if k == key]
 
             for key in delete: del FileStorage.__objects[key]
-
