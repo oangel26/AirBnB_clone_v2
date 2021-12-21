@@ -57,3 +57,4 @@ class FileStorage:
         for key in [key for key in FileStorage.__objects if key.split('.')[1] == obj.id]:
             del FileStorage.__objects[obj.to_dict()[
                 '__class__'] + '.' + obj.id]
+        self.save()
