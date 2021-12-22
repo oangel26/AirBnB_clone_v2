@@ -7,8 +7,9 @@ from os import getenv
 from models import City
 from models.__init__ import storage
 
+
 class State(BaseModel, Base):
-    """ State class """    
+    """ State class """
     __tablename__ = "states"
 
     if getenv("HBNB_TYPE_STORAGE") == 'db':
