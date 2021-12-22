@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
-import json
-from sqlalchemy import (create_engine)
-import os
+from sqlalchemy import create_engine, MetaData
+from os import getenv
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
+from models.base_model import Base
 
 
 class DBStorage:
@@ -15,13 +15,12 @@ class DBStorage:
     def __init__(self):
         """Returns a dictionary of models currently in storage"""
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
-            os.getenv('HBNB_MYSQL_USER'), os.getenv('HBNB_MYSQL_PWD'), os.getenv('HBNB_MYSQL_HOST'), os.getenv('HBNB_MYSQL_DB'), pool_pre_ping=True))
-        Base.metadata.create_all(DBStorage.__engine)
-        Session = sessionmaker(bind=engine)
+            getenv('HBNB_MYSQL_USER'), getenv('HBNB_MYSQL_PWD'), getenv('HBNB_MYSQL_HOST'), getenv('HBNB_MYSQL_DB'), pool_pre_ping=True))
+        Session = sessionmaker(bind=self.__engine)
         self.__session = Session()
 
-        if os.getenv('HBNB_ENV') == 'test':
-            self.__table__.drop(DBStorage.__engine)
+        if getenv('HBNB_ENV') == 'test':
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
@@ -55,7 +54,7 @@ class DBStorage:
 
     def reload(self):
         """Loads storage dictionary from database"""
-        from models.base_model import BaseModel
+        from models.base_model import BaseModel, Base
         from models.user import User
         from models.place import Place
         from models.state import State
@@ -65,7 +64,6 @@ class DBStorage:
 
         Base.metadata.create_all(DBStorage.__engine)
 
-        session_factory = sessionmaker(
-            bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
