@@ -5,7 +5,7 @@ from os import getenv
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
 from models.base_model import Base
-
+import models
 
 class DBStorage:
     """This class manages storage of hbnb models in database format"""
@@ -24,7 +24,6 @@ class DBStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-
         if cls is None:
             new_dict = {}
             for q in self.__session.query().all():
@@ -33,15 +32,16 @@ class DBStorage:
             return new_dict
 
         new_dict = {}
-        for q in self.__session.query(cls).all():
-            k = '{}.{}'.format(q.__class__.__name__, q.id)
-            new_dict[k] = q
+        objs = self.__session.query(models.classes[cls]).all()
+        for obj in objs:
+            k = '{}.{}'.format(obj.__class__.__name__, obj.id)
+            new_dict[k] = obj
         return new_dict
+
 
     def new(self, obj):
         """Add the object to the current database session"""
-        if obj is not None:
-            self.__session.add(obj)
+        self.__session.add(obj)
 
     def save(self):
         """Commit all changes of the current database session"""
@@ -62,7 +62,7 @@ class DBStorage:
         from models.amenity import Amenity
         from models.review import Review
 
-        Base.metadata.create_all(self.__engine)
+        self.__session = Base.metadata.create_all(self.__engine)
 
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)

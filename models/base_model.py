@@ -53,6 +53,7 @@ class BaseModel:
         """Updates updated_at with current time when instance is changed"""
         from models import storage
         self.updated_at = datetime.now()
+        print("entro al save de base_model")
         storage.new(self)
         storage.save()
 

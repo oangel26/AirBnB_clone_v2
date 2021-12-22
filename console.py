@@ -17,7 +17,7 @@ from models.review import Review
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
-    # determines prompt for interactive/non-interactive modes
+    # deetermines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
@@ -35,7 +35,7 @@ class HBNBCommand(cmd.Cmd):
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print('(hbnb)')
+            print('(hbnb) ', end="")
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
@@ -138,6 +138,7 @@ class HBNBCommand(cmd.Cmd):
                     setattr(new_instance, keyword[0], new_value)
                 else:
                     setattr(new_instance, keyword[0], value)
+            storage.new(new_instance)
             storage.save()
             print(new_instance.id)
 
@@ -214,33 +215,19 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        if getenv("HBNB_TYPE_STORAGE") == 'FileStorage':
-            print_list = []
-            if args: # este me indica que hay argumentos (all clase)
-                args = args.split(' ')[0]  # remove possible trailing args
-                if args not in HBNBCommand.classes:
-                    print("** class doesn't exist **")
-                    return
-                for k, v in storage._FileStorage__objects.items():
-                    if k.split('.')[0] == args:
-                        print_list.append(str(v))
-            else: #caso donde esta all solo
-                for k, v in storage._FileStorage__objects.items():
+        print_list = []
+        if args: # este me indica que hay argumentos (all clase)
+            args = args.split(' ')[0]
+            if args not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+            for k, v in storage.all(args).items():
+                if k.split('.')[0] == args:
                     print_list.append(str(v))
-            print(print_list)
-        else: # caso BD
-            print_list = []
-            if args: # este me indica que hay argumentos (all clase)
-                args = args.split(' ')[0]
-                if args not in HBNBCommand.classes:
-                    print("** class doesn't exist **")
-                    return
-                for k, v in storage.all(args).items():
-                    print_list.append(str(v))
-            else:
-                for k, v in storage.all().items():
-                    print_list.append(str(v))
-            print(print_list)
+        else: #caso donde esta all solo
+            for k, v in storage.all().items():
+                print_list.append(str(v))
+        print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
