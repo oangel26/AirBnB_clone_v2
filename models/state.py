@@ -1,12 +1,10 @@
-#!/usr/bin/python3
+#!/usr/local/bin/python3.9
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from os import getenv
-from models import City
-from models.__init__ import storage
-
+import models
 
 class State(BaseModel, Base):
     """ State class """
@@ -23,7 +21,7 @@ class State(BaseModel, Base):
     def cities(self):
         """ FileStorage relationship between cities and state"""
         city_list = []
-        for v in storage.__objects.values():
+        for v in models.storage.__objects.values():
             if "state_id" in v.__dict__.keys():
                 if v.__dict__["state_id"] == self.id:
                     city_list.append(v)

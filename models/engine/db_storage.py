@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/local/bin/python3.9
 """This module defines a class to manage file storage for hbnb clone"""
 from sqlalchemy import create_engine, MetaData
 from os import getenv
@@ -54,7 +54,7 @@ class DBStorage:
 
     def reload(self):
         """Loads storage dictionary from database"""
-        from models.base_model import BaseModel, Base
+        from models.base_model import BaseModel
         from models.user import User
         from models.place import Place
         from models.state import State
@@ -62,7 +62,7 @@ class DBStorage:
         from models.amenity import Amenity
         from models.review import Review
 
-        Base.metadata.create_all(DBStorage.__engine)
+        Base.metadata.create_all(self.__engine)
 
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
