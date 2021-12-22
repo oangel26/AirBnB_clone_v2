@@ -4,6 +4,8 @@ import json
 from sqlalchemy import (create_engine)
 import os
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import scoped_session
+
 
 class DBStorage:
     """This class manages storage of hbnb models in database format"""
@@ -29,22 +31,29 @@ class DBStorage:
 			for q in self.__session.query().all():
                 k = '{}.{}'.format(q.__class__.__name__, q.id)
 				new_dict[k] = q
+			return new_dict
+
+        for q in self.__session.query(cls).all():
+                k = '{}.{}'.format(q.__class__.__name__, q.id)
+				new_dict[k] = q
+			return new_dict
 
     def new(self, obj):
         """Add the object to the current database session"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+		if obj is not None:
+            self.__session.add(obj)
 
     def save(self):
         """Commit all changes of the current database session"""
-        with open(FileStorage.__file_path, 'w') as f:
-            temp = {}
-            temp.update(DBStorage.__session)
-            for key, val in temp.items():
-                temp[key] = val.to_dict()
-            json.dump(temp, f)
+		self.__session.commit()
+
+    def delete(self, obj=None):
+        """Delete from the current database session"""
+        if obj is not None:
+			self.__session.delete(obj)
 
     def reload(self):
-        """Loads storage dictionary from file"""
+        """Loads storage dictionary from database"""
         from models.base_model import BaseModel
         from models.user import User
         from models.place import Place
@@ -53,23 +62,8 @@ class DBStorage:
         from models.amenity import Amenity
         from models.review import Review
 
-        classes = {
-            'BaseModel': BaseModel, 'User': User, 'Place': Place,
-            'State': State, 'City': City, 'Amenity': Amenity,
-            'Review': Review
-        }
-        try:
-            temp = {}
-            with open(FileStorage.__file_path, 'r') as f:
-                temp = json.load(f)
-                for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
-        except FileNotFoundError:
-            pass
+		Base.metadata.create_all(DBStorage.__engine)
 
-    def delete(self, obj=None):
-        """Delete from the current database session"""
-        if obj is not None:
-            key = "{}.{}".format(obj.to_dict()['__class__'], obj.id)
-            if key in FileStorage.__objects:
-                del FileStorage.__objects[key]
+        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(session_factory)
+		self.__session = Session()
