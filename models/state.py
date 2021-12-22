@@ -23,7 +23,7 @@ class State(BaseModel, Base):
         """ FileStorage relationship between cities and state"""
         city_list = []
         for v in storage.__objects.values():
-            if "state_id" in v.keys():
-                if v["state_id"] == self.id:
+            if "state_id" in v.__dict__.keys():
+                if v.__dict__["state_id"] == self.id:
                     city_list.append(v)
         return city_list
