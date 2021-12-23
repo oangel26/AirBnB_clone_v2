@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
-import sqlalchemy
+import models
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
@@ -13,7 +13,7 @@ class FileStorage:
         new_dict = {}
         if cls is not None:
             for k, v in FileStorage.__objects.items():
-                if k.split('.')[0] == cls:
+                if cls == k.split('.')[0]:
                     new_dict[k] = v
             return new_dict
         return FileStorage.__objects
