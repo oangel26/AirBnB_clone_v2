@@ -1,9 +1,17 @@
 #!/usr/local/bin/python3.9
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, ForeignKey, Float, Integer
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, String, ForeignKey, Float, Integer, Table
+from sqlalchemy.orm import relationship, backref
 from os import getenv
 
+metadata = Base.metadata
+
+place_amenity = Table('place_amenity', metadata,
+                      Column('place_id', String(60),
+                             ForeignKey('place.id'), primary_key=True),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenity.id'), primary_key=True)
+                      )
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -20,6 +28,11 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
+        reviews = relationship("Review", backref="place",
+                               cascade="all, delete-orphan")
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 viewonly=False,
+                                 back_populates="place_amenities")
     else:
         city_id = ""
         user_id = ""
@@ -32,3 +45,12 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
+
+        @property
+        def reviews(self):
+            """Getter property of reviews"""
+            list_reviews = []
+            for review in models.storage.all("Review").values():
+                if review.place_id == self.id:
+                    list_reviews.append(review)
+            return list_reviews
