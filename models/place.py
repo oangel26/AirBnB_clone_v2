@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3.9
+#!/usr/bin/python3
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Float, Integer, Table
 from sqlalchemy.orm import relationship, backref
@@ -8,9 +8,9 @@ metadata = Base.metadata
 
 place_amenity = Table('place_amenity', metadata,
                       Column('place_id', String(60),
-                             ForeignKey('place.id'), primary_key=True),
+                             ForeignKey('places.id'), primary_key=True),
                       Column('amenity_id', String(60),
-                             ForeignKey('amenity.id'), primary_key=True)
+                             ForeignKey('amenities.id'), primary_key=True)
                       )
 
 class Place(BaseModel, Base):
@@ -19,7 +19,7 @@ class Place(BaseModel, Base):
 
     if getenv("HBNB_TYPE_STORAGE") == 'db':
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
-        user_id = Column(String(60), ForeignKey('user.id'), nullable=False)
+        user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         name = Column(String(128), nullable=False)
         description = Column(String(1024), nullable=True)
         number_rooms = Column(Integer, nullable=False, default=0)
@@ -55,19 +55,3 @@ class Place(BaseModel, Base):
                     list_reviews.append(review)
             return list_reviews
 
-        @property
-        def amenities(self):
-            """Getter property of reviews"""
-            list_amenity = []
-            for amenity in models.storage.all("Amenity").values():
-                if amenity.place_id == self.id:
-                    list_amenity.append(amenity)
-                return list_amenity
-
-        @amenities.setter
-        def amenities(self, obj):
-            amenity_ids = []
-            if obj.__name__ == "Amenity":
-                for amenity in models.storage.all("Amenity").values():
-                    if amenity.place == self.id:
-                        amenity_ids.append(obj.id)

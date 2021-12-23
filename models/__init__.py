@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3.9
+#!/usr/bin/python3
 """This module instantiates an object of class FileStorage and DBStorage"""
 from os import getenv
 from models.base_model import BaseModel
