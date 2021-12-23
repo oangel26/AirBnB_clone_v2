@@ -3,6 +3,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Float, Integer, Table
 from sqlalchemy.orm import relationship, backref
 from os import getenv
+import models
 
 metadata = Base.metadata
 
@@ -12,6 +13,7 @@ place_amenity = Table('place_amenity', metadata,
                       Column('amenity_id', String(60),
                              ForeignKey('amenities.id'), primary_key=True)
                       )
+
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -60,9 +62,9 @@ class Place(BaseModel, Base):
             """ property method for amenities
             """
             list_amenities = []
-            for amenity in models.storage.all(Amenity).values():
+            for amenity in models.storage.all("Amenity").values():
                 if amenity.place_id == self.id:
-                    amenity_list.append(amenity)
+                    list_amenities.append(amenity)
             return list_amenities
 
         @amenities.setter
@@ -70,6 +72,6 @@ class Place(BaseModel, Base):
             """Setter method for amenities
             """
             if amenity:
-                for amenity in models.storage.all(Amenity).values():
+                for amenity in models.storage.all("Amenity").values():
                     if amenity.place_id == self.id:
-                        amenity_ids.append(amenity)
+                        Place.amenity_ids.append(amenity)
