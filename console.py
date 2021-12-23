@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/local/python3.9
 """ Console Module """
 import cmd
 import sys

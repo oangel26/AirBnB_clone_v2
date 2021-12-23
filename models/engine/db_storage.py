@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/local/bin/python3.9
 """This module defines a class to manage file storage for hbnb clone"""
 from sqlalchemy import create_engine, MetaData
 from os import getenv

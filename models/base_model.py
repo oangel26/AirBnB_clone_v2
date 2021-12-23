@@ -1,9 +1,9 @@
-#!/usr/bin/python3
-"""This module defines a base class for all models in our hbnb clone"""
+#!/usr/local/bin/python3.9
+"""BaseModel module """
 import uuid
 from datetime import datetime
-from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, String, DateTime
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql.expression import delete
 
 Base = declarative_base()
@@ -13,8 +13,8 @@ class BaseModel:
     """A base class for all hbnb models"""
 
     id = Column(String(60), nullable=False, primary_key=True)
-    created_at = Column(DateTime, default=datetime.utcnow())
-    state_id = Column(DateTime, default=datetime.utcnow())
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    state_id = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -53,7 +53,6 @@ class BaseModel:
         """Updates updated_at with current time when instance is changed"""
         from models import storage
         self.updated_at = datetime.now()
-        print("entro al save de base_model")
         storage.new(self)
         storage.save()
 
@@ -66,7 +65,7 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
 
-        if "_sa_instance_state" in dictionary.key():
+        if "_sa_instance_state" in dictionary.keys():
             del dictionary["_sa_instance_state"]
 
         return dictionary

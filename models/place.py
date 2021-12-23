@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/local/bin/python3.9
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Float, Integer, Table
 from sqlalchemy.orm import relationship, backref
@@ -55,3 +55,21 @@ class Place(BaseModel, Base):
                     list_reviews.append(review)
             return list_reviews
 
+        @property
+        def amenities(self):
+            """ property method for amenities
+            """
+            list_amenities = []
+            for amenity in models.storage.all(Amenity).values():
+                if amenity.place_id == self.id:
+                    amenity_list.append(amenity)
+            return list_amenities
+
+        @amenities.setter
+        def amenities(self, amenity=None):
+            """Setter method for amenities
+            """
+            if amenity:
+                for amenity in models.storage.all(Amenity).values():
+                    if amenity.place_id == self.id:
+                        amenity_ids.append(amenity)
