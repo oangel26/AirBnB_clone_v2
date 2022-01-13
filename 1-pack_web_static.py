@@ -8,6 +8,9 @@ from datetime import datetime
 
 
 def do_pack():
+    """
+    Function to create a .tgz archive.
+    """
     try:
         local("mkdir -p /versions/")
         d_t = datetime.now().strftime("%Y%m%d%H%M%S")
