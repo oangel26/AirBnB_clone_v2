@@ -3,7 +3,6 @@
 
 sudo apt-get update -y
 sudo apt-get install nginx -y
-sudo service nginx restart
 sudo mkdir -p /data/web_static/shared/
 sudo mkdir -p /data/web_static/releases/test/
 sudo touch /data/web_static/releases/test/index.html
