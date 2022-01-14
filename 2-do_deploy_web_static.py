@@ -32,12 +32,17 @@ def do_deploy(archive_path):
     if os.path.exists(archive_path):
         put(archive_path, '/tmp/')
         run("mkdir -p /data/web_static/releases/{}/".format(name_dir))
-        run("tar -xzf /tmp/web_static_{}.tgz -C /data/web_static/releases/web_static_{}/".format(name_dir, name_dir))
+        run("tar -xzf /tmp/web_static_{}.tgz -C \
+        /data/web_static/releases/web_static_{}/".format(name_dir, name_dir))
         run("rm /tmp/{}.tgz".format(name_dir))
-        run("mv /data/web_static/releases/web_static_{}/web_static/* /data/web_static/releases/web_static_{}/".format(name_dir, name_dir))
-        run("rm -rf /data/web_static/releases/web_static_{}/web_static".format(name_dir))
+        run("mv /data/web_static/releases/web_static_{}/web_static/* \
+            /data/web_static/releases/web_static_{}/".
+            format(name_dir, name_dir))
+        run("rm -rf /data/web_static/releases/web_static_{}/web_static"
+            .format(name_dir))
         run("rm -rf /data/web_static/current")
-        run("ln -s /data/web_static/releases/web_static_{}/ /data/web_static/current".format(name_dir))
+        run("ln -s /data/web_static/releases/web_static_{}/ \
+            /data/web_static/current".format(name_dir))
         print("New version deployed!")
         return True
     else:
