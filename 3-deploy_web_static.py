@@ -11,6 +11,7 @@ env.hosts = ['34.139.237.222', '174.129.81.127']
 env.user = "ubuntu"
 env.key_filename = '~/.ssh/school'
 
+
 def deploy():
     """Fabric script that creates and distributes an archive
     to your web servers, using the function deploy"""
