@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
 # Bash script that sets up your web servers for the deployment of web_static.
 
-apt-get update -y
-apt-get install nginx -y
-mkdir -p /data/web_static/releases/test
-mkdir -p /data/web_static/shared/
-touch /data/web_static/releases/test/index.html
-echo "Holberton School" > /data/web_static/releases/test/index.html
-ln -sf /data/web_static/releases/test /data/web_static/current
-chown -R ubuntu:ubuntu /data/
-cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
-sed -i '/listen 80 default_server/a location /hbnb_static {\n\talias /data/web_static/current/;\n\tautoindex off;\n}' /etc/nginx/sites-available/default
-service nginx restart
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get install -y nginx
+sudo mkdir -p /data/
+sudo mkdir -p /data/web_static/
+sudo mkdir -p /data/web_static/shared/
+sudo mkdir -p /data/web_static/releases/
+sudo mkdir -p /data/web_static/releases/test/
+sudo touch /data/web_static/releases/test/index.html
+sudo chown ubuntu:ubuntu -hR /data/
+sudo echo "<html><head></head><body>Holberton School</body></html>" | sudo tee /data/web_static/releases/test/index.html
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
+sudo chown ubuntu:ubuntu -hR /data/
+sudo sed -i '60i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
+sudo service nginx restart
