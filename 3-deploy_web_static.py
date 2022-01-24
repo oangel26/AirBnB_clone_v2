@@ -7,9 +7,9 @@ from fabric.api import run, put, env, local
 import os
 from datetime import datetime
 
-env.hosts = ['34.139.188.96', '54.209.148.200']
+env.hosts = ['34.139.237.222', '174.129.81.127']
 env.user = "ubuntu"
-
+env.key_filename = '~/.ssh/school'
 
 def deploy():
     """Fabric script that creates and distributes an archive
