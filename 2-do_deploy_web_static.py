@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/local/bin/python3
 """
 Fabric script that distributes an archive to a pair of
 web servers, using the function do_deploy.
@@ -7,8 +7,9 @@ from fabric.api import run, put, env, local
 import os
 from datetime import datetime
 
-env.hosts = ['34.139.188.96', '54.209.148.200']
+env.hosts = ['34.139.237.222', '174.129.81.127']
 env.user = "ubuntu"
+env.key_filename = '~/.ssh/school'
 
 
 def do_pack():
