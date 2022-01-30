@@ -32,7 +32,7 @@ def c_is_fun(text=None):
     the value of the text variable
     """
     new_text = text.replace('_', ' ')
-    return "c {}".format(new_text)
+    return "C {}".format(new_text)
 
 
 if __name__ == "__main__":
