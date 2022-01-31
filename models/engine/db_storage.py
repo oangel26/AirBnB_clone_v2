@@ -38,7 +38,6 @@ class DBStorage:
             new_dict[k] = obj
         return new_dict
 
-
     def new(self, obj):
         """Add the object to the current database session"""
         self.__session.add(obj)
@@ -67,3 +66,7 @@ class DBStorage:
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
+
+    def close(self):
+        """call remove() method on the private session attribute"""
+        self.__sesion.remove()
