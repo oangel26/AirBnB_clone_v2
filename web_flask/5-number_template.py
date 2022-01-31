@@ -69,7 +69,7 @@ def display_html(n):
     result = re.match("[-+]?\d+$", n)
     if result:
         context = {
-            'n':n,
+            'n': n,
         }
         return render_template("5-number.html", **context)
     else:
