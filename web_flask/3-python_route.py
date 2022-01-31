@@ -38,7 +38,7 @@ def c_is_fun(text=None):
 
 
 @app.route('/python/<text>', methods=['GET'], strict_slashes=False)
-def c_is_fun(text="is cool"):
+def python_is_cool(text="is cool"):
     """ Function that display “Python ” followed by
     the value of the text variable
     """
