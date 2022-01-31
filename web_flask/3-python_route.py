@@ -1,3 +1,4 @@
+
 #!/usr/bin/python3
 """
 Script that starts a Flask web application:
@@ -36,8 +37,8 @@ def c_is_fun(text=None):
     new_text = text.replace('_', ' ')
     return "C {}".format(new_text)
 
-
 @app.route('/python/<text>', methods=['GET'], strict_slashes=False)
+@app.route('/python/', methods=['GET'], strict_slashes=False)
 def python_is_cool(text="is cool"):
     """ Function that display “Python ” followed by
     the value of the text variable
